@@ -1,12 +1,27 @@
 -- main module file
 --local module = require("spzenhan-lua.module")
 
+-- **************************************************
+-- *  spzenhan-lua 
+-- **************************************************
+
+-- Set Path to "spzenhan.exe" 
+local exe_path = '../zenhan/spzenhan.exe'
+
+-- Get this scripst file path
+local this_full_path = debug.getinfo(1, 'S').source:sub(2)
+local file_name      = string.match( this_full_path, '[^/]+$')
+local this_path      = this_full_path:sub(1, #this_full_path - #file_name)
+local spzenhan_exe   = this_path .. exe_path
+
+
+
 local M = {}
 M.config = {
     -- default config
     opt               = "default setting",
-    spzenhan_exe      = "spzenhan.exe"   , -- Execute Bin  --> Temp Setting
-    spzenhan_defautlt = 0                , -- Status 0:IME off when InsertLeave / 1:Keep IME status when InsertLeave
+    spzenhan_exe      = spzenhan_exe     , -- Execute Bin  
+    spzenhan_default  = 0                , -- Status 0:IME off when InsertLeave / 1:Keep IME status when InsertLeave
 }
 
 
@@ -65,10 +80,10 @@ M.setup = function(args)
             pattern ={ "*" },
             group = 'zenhan',
             callback = function()
-                -- if (M.config.spzenhan_defautlt == 1) and (vim.g.spzenhan_status == '1') then
+                -- if (M.config.spzenhan_default == 1) and (vim.g.spzenhan_status == '1') then
                 --     vim.g.spzenhan_status = vim.fn.system( M.config.spzenhan_exe .. ' 1' )
                 -- end
-                if (M.config.spzenhan_defautlt == 1) and (vim.g.spzenhan_status == 1 ) then
+                if (M.config.spzenhan_default == 1) and (vim.g.spzenhan_status == 1 ) then
                     vim.g.spzenhan_status = tonumber( vim.fn.system( M.config.spzenhan_exe .. ' 1' ) )
                 end
             end,
@@ -90,7 +105,7 @@ end
 M.put = function(args)
 
     print( M.config.spzenhan_exe)
-    --print( M.config.spzenhan_defautlt)
+    --print( M.config.spzenhan_default)
 end
 
 
